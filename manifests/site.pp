@@ -1,20 +1,11 @@
 node default {
-  import 'test.pp'
-# $location = 'dev'
+  file { '/tmp/foo':
+    content => $memoryfree,
+  }
 
-# notify { "Classes to include":
-#   message => hiera_array("classes"),
-# }
+  notify { "testing": }
 
-# $files = hiera_hash("files")
-# create_resources("file", $files) 
-
-# file { "/tmp/zot":
-#   owner => 'root',
-#   group => 'root',
-# }
-
-# notify { "foo":
-#   message => "bar",
-# }
+  exec { "/bin/rm /tmp/foo":
+    onlyif => "/bin/ls /tmp/foo",
+  }
 }
