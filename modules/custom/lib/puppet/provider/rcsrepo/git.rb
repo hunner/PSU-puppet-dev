@@ -16,7 +16,7 @@ Puppet::Type.type(:rcsrepo).provide(:git) do
       git("clone", resource[:source], resource[:path])
     else
       FileUtils.mkdir_p resource[:path] if ! File.directory? resource[:path]
-      git_init resource[:path]
+      git_path "init"
     end
   end
 
@@ -24,7 +24,17 @@ Puppet::Type.type(:rcsrepo).provide(:git) do
     FileUtils.rm_rf resource[:path] if File.directory?(resource[:path] + '/.git')
   end
 
-  def git_init(path)
-    git("--git-dir", path + '/.git', "--work-tree", path, "init")
+  def revision
+    #git("--git-dir", path + '/.git', 'rev-parse', 'HEAD')
+    git_path("rev-parse", "HEAD").chomp
+  end
+
+  def revision=(rev)
+    git_path('fetch', 'origin')
+    git_path('reset', '--hard', rev)
+  end
+
+  def git_path(*args)
+    git("--git-dir", resource[:path] + '/.git', "--work-tree", resource[:path], *args)
   end
 end
