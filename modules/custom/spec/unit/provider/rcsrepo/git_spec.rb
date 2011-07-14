@@ -26,17 +26,25 @@ describe provider_class do
   end
 
   it 'should not create a directory for a git clone' do
-    @provider.resource[:source] = 'https://github.com/jordansissel/puppet-examples.git'
     FileUtils.expects(:mkdir_p).never
     FileUtils.expects(:rm_rf).never #the dir doesn't exist
-    @provider.expects(:git).with("clone", @provider.resource[:source], @provider.resource[:path])
+    @provider.expects(:git).with("clone", "git://github.com/jordansissel/puppet-examples.git", @test_dir)
 
+    @provider.resource[:source] = 'git://github.com/jordansissel/puppet-examples.git'
     @provider.create
   end
 
   it 'should ensure that a git directory exists' do
     @provider.create
     @provider.exists?.should == true
+  end
+
+  it 'should ensure that destroyed repos are removed' do
+    @provider.resource[:source] = 'git://github.com/jordansissel/puppet-examples.git'
+    @provider.create
+    @provider.exists?.should == true
+    @provider.destroy
+    @provider.exists?.should == false
   end
 
   after :each do

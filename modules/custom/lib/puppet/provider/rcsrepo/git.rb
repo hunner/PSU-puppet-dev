@@ -20,6 +20,10 @@ Puppet::Type.type(:rcsrepo).provide(:git) do
     end
   end
 
+  def destroy
+    FileUtils.rm_rf resource[:path] if File.directory?(resource[:path] + '/.git')
+  end
+
   def git_init(path)
     git("--git-dir", path + '/.git', "--work-tree", path, "init")
   end
