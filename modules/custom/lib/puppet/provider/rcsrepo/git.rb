@@ -34,7 +34,7 @@ Puppet::Type.type(:rcsrepo).provide(:git) do
   def revision=(rev)
     puts "Running revision="
     git_path('fetch', 'origin')
-    git_path('reset', '--hard', rev)
+    git_path('checkout', rev)
   end
 
   def git_path(*args)
