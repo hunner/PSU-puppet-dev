@@ -26,13 +26,11 @@ Puppet::Type.type(:rcsrepo).provide(:git) do
   end
 
   def revision
-    puts "Running revision"
     #git("--git-dir", path + '/.git', 'rev-parse', 'HEAD')
     git_path("rev-parse", "HEAD").chomp
   end
 
   def revision=(rev)
-    puts "Running revision="
     git_path('fetch', 'origin')
     git_path('checkout', rev)
   end
