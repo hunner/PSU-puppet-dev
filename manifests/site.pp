@@ -8,4 +8,9 @@ node default {
   exec { "/bin/rm /tmp/foo":
     onlyif => "/bin/ls /tmp/foo",
   }
+
+  rcsrepo { "look ma, no provider":
+    path   => "/tmp/gitrepo",
+    source => 'https://github.com/jordansissel/puppet-examples.git',
+  }
 }
