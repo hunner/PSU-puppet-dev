@@ -14,6 +14,7 @@ Puppet::Type.type(:rcsrepo).provide(:git) do
     if resource[:source]
       FileUtils.rm_rf resource[:path] if File.exists? resource[:path]
       git("clone", resource[:source], resource[:path])
+      self.revision = resource[:revision] if resource[:revision]
     else
       FileUtils.mkdir_p resource[:path] if ! File.directory? resource[:path]
       git_path "init"
