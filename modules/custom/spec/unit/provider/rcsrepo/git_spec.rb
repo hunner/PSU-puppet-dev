@@ -20,7 +20,7 @@ describe provider_class do
   it 'should create a directory for a new git init' do
     FileUtils.expects(:mkdir_p)
     FileUtils.expects(:rm_rf).never
-    @provider.expects(:git).with("--git-dir", @provider.resource[:path] + '/.git', "--work-tree", @provider.resource[:path], "init")
+    @provider.expects(:git).with("--git-dir", @test_dir + '/.git', "--work-tree", @test_dir, "init")
 
     @provider.create
   end
